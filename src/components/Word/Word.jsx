@@ -1,8 +1,13 @@
-
-const Word = () => {
+import Character from "../Character/Character";
+import "./Word.scss"
+const Word = ({ word }) => {
   return (
-    <div>Word</div>
-  )
-}
+    <div className="Word">
+      {word.map((char, i) => (
+        <Character char={char} key={i} />
+      ))}
+    </div>
+  );
+};
 
-export default Word
+export default Word;

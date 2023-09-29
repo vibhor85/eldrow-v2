@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-
+import { findWord } from "../WORDS";
 export const StoreContext = createContext();
 
 const StoreProvider = ({ children }) => {
@@ -16,10 +16,25 @@ const StoreProvider = ({ children }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Enter") {
+        const word = store[rowIndex.current].join("");
+        const isValid = findWord(word);
+        console.log(isValid ? "Valid" : "Invalid");
         if (rowIndex.current < 4) {
           columnIndex.current = 0;
           rowIndex.current += 1;
         }
+        return;
+      } else if (e.key === "Backspace") {
+        setStore((prev) => {
+          const newArray = [...prev];
+          if (newArray[rowIndex.current][columnIndex.current])
+            newArray[rowIndex.current][columnIndex.current] = "";
+          if (columnIndex.current > 0) {
+            columnIndex.current -= 1;
+          }
+          console.log(rowIndex.current, columnIndex.current);
+          return newArray;
+        });
         return;
       }
 
@@ -31,7 +46,6 @@ const StoreProvider = ({ children }) => {
           newArray[rowIndex.current][columnIndex.current] = key;
         if (columnIndex.current < 4) {
           columnIndex.current += 1;
-        } else {
         }
         console.log(rowIndex.current, columnIndex.current);
         return newArray;
